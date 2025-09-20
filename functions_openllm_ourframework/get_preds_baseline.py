@@ -63,9 +63,7 @@ def extract_phrases(data):
     return extracted_phrases
 
 def compute_entropy(logits):
-    # logits 的形状是 [sequence_length, vocab_size]
-
-    # 在 GPU 上检查 NaN 和 Inf
+    # logits shape [sequence_length, vocab_size]
     if torch.isnan(logits).any():
         print("Error: Logits contain NaN values on GPU!")
         raise ValueError("Logits contain NaN values!")
@@ -74,14 +72,12 @@ def compute_entropy(logits):
         print("Error: Logits contain Inf values on GPU!")
         raise ValueError("Logits contain Inf values!")
 
-    probs = torch.nn.functional.softmax(logits, dim=-1)  # 计算概率分布
-    log_probs = torch.log(probs + 1e-12)  # 避免 log(0)
+    probs = torch.nn.functional.softmax(logits, dim=-1)  
+    log_probs = torch.log(probs + 1e-12) 
 
-    # 计算熵：sum(-p * log(p)) 对 vocab_size 维度求和
     entropy = -torch.sum(probs * log_probs, dim=-1)  # [batch_size, sequence_length]
 
-    # 长度归一化
-    normalized_entropy = entropy.sum() / logits.size(0)  # 总熵除以词组长度
+    normalized_entropy = entropy.sum() / logits.size(0)  
 
     return normalized_entropy
 
@@ -289,7 +285,7 @@ def update_contain_answer_with_attention(dataset, sure_candidate, iteration, out
 
             del sentence_logits
 
-    return dataset ,win_candidates
+    return dataset,win_candidates
 
 def sure_infer_train(model, model_type, tokenizer, dataset ,start_time ,n_articles=10 ,output_path='./', num_iterations=5):
     print("=====> SuRe/Our framework Multi-Iteration Process")
@@ -641,18 +637,6 @@ def sure_infer(model, model_type, tokenizer, dataset, n_articles=10, output_path
 
 ################## Functions to Get Prediction ##################
 def analyze_candidates_contain_groundtruth(dataset, sure_candidate, output_path ,iteration):
-    """
-    分析候选项是否包含正确答案，并计算包含的概率。
-
-    Args:
-        dataset (list): 数据集，每个元素包含"question"和"answers"字段。
-        sure_candidate (list): 候选项列表。
-        output_path (str): 输出文件路径。
-
-    Returns:
-        dict: 包括完全包含和部分包含的概率，以及所有问题的前10个单词候选文本。
-    """
-    # 文件输出路径
     output_file = os.path.join(output_path, f"memory_slot_sure_analysis_output_{iteration}.txt")
     total_questions = len(dataset)
     fully_contain_count = 0
@@ -743,7 +727,7 @@ def get_final_pred_sure(candidate1, candidate2, summary1, summary2, correct1, co
 
         max_vote = np.max(rank_i)
 
-        # If Tie, then select first candidate as answer
+        # If Tie, then select the first candidate as answer
         if (rank_i == max_vote).sum() > 1:
             res.append([candidate1[i][0]])
             res_summary.append(summary1[i])
