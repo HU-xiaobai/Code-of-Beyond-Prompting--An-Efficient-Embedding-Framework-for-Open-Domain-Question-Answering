@@ -43,6 +43,8 @@ Run inference with a single command. Here, we provide our method with LLaMA 3.1 
 CUDA_VISIBLE_DEVICES=0 python query_openllm_ourframework_github.py --data_name hotpotqa (2wiki, nq, wq) --qa_data your_dataset_path --lm_type llama3 --n_retrieval 10 --infer_type embqa --output_folder your_output_dataset --end 500 (we follow Implementation of Harsh Trivedi et al. ACL 2023 and Kim et al. ICLR 2024 here) 
 ```
 
+Since our method needs to insert the exploratory embedding in the model embedding layer, we modify some source code of the llama model in the Decoding directory Decoding/transformers/models/llama/modelling_llama.py, and you need to change the path in the query_openllm_ourframework_github.py at the beginning to your own Decoding directory path.
+
 ## Acknowledgements
 
 This codebase is inspired by the [ICLR 2024 SuRe repository](https://github.com/bbuing9/ICLR24_SuRe).
