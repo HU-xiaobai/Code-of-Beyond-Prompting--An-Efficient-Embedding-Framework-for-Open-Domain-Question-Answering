@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository accompanies our ACL 2025 long paper:
+This repository accompanies our ACL 2025 main paper:
 
 **Beyond Prompting: An Efficient Embedding Framework for Open-Domain Question Answering**  
 Zhanghao Hu, Hanqi Yan, Qinglin Zhu, Zhenyi Shen, Yulan He, Lin Gui  
