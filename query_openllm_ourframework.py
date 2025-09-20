@@ -100,23 +100,6 @@ def get_accuracy(batches, preds):
 
     return np.array(res_acc)
 
-
-def truncate_predictions(preds, num_words=5):
-    truncated_preds = []
-    for pred in preds:
-        if isinstance(pred, list):
-            pred = pred[0]
-
-        if isinstance(pred, str):
-            words = pred.strip().split()
-            truncated_pred = ' '.join(words[:num_words])
-            truncated_preds.append(truncated_pred)
-        else:
-            truncated_preds.append(pred)
-
-    return truncated_preds
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Query QA Data to GPT API.')
     parser.add_argument('--data_name', type=str, default='hotpot_qa', help='Name of QA Dataset')
@@ -189,7 +172,7 @@ if __name__ == '__main__':
 
 
     print("=====> All Procedure is finished!")
-    results_file = os.path.join(method_folder, "results.json")  # 确保路径拼接正确
+    results_file = os.path.join(method_folder, "results.json")
     with open(results_file, "w", encoding='utf-8') as writer:
         writer.write(json.dumps(all_results, indent=4, ensure_ascii=False) + "\n")
 
